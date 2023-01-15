@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,17 +21,14 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::post('login', [LoginController::class, 'login']);
+// Route::post('login', [LoginController::class, 'login']);
 
-Route::middleware('auth:sanctum')->prefix('posts')->group(function () {
-    Route::get('', [LoginController::class, 'posts']);
-    Route::post('', [LoginController::class, 'create_post']);
-    Route::get('/:id', [LoginController::class, 'get_post']);
-    Route::put('/:id', [LoginController::class, 'update_post']);
-    Route::delete('/:id', [LoginController::class, 'delete_post']);
+Route::prefix('posts')->group(function () {
+    // Route::middleware('auth:sanctum')->prefix('posts')->group(function () {
+    Route::get('', [PostController::class, 'index']);
+    Route::post('', [PostController::class, 'store']);
+    Route::get('/{id}', [PostController::class, 'show']);
+    Route::put('/{post}', [PostController::class, 'update']);
+    Route::delete('/{post}', [PostController::class, 'destroy']);
 });
 
-
-Route::get('/', function () {
-    return 'LOGIN!';
-});
