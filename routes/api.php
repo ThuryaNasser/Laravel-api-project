@@ -3,7 +3,6 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,12 +14,15 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('/', function () {
+    return response()->json(['message' => 'Please login']);
+});
 
-Route::post('/register', [AuthController::class, 'createUser']);
+Route::post('/register', [AuthController::class, 'store']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->prefix('posts')->group(function () {
-    Route::get('', [PostController::class, 'index']);
+Route::get('/posts', [PostController::class, 'index'])->name(('posts'));
+Route::group(['middleware'=>'auth:sanctum','prefix'=>'posts'], function () {
     Route::post('', [PostController::class, 'store']);
     Route::get('/{id}', [PostController::class, 'show']);
     Route::put('/{post}', [PostController::class, 'update']);
